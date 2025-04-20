@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend("re_Ap1bCEG8_9yuKZjWqNzx5xhVZ83hUTf9t");
-const fromEmail = "saiju.pranu@gmail.com"
+const resend = new Resend(RESEND_API_KEY);
+const fromEmail = FROM_EMAIL
 export async function POST(req, res) {
   const { email, subject, message } = await req.json();
   console.log(email, subject, message);
