@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-const fromEmail = process.env.FROM_EMAIL
-export async function POST(req, res) {
+const fromEmail = process.env.FROM_EMAIL;
+
+export async function POST(req) {
   const { email, subject, message } = await req.json();
   console.log(email, subject, message);
+
+  // Move this inside the function to avoid build-time usage
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
   try {
     const data = await resend.emails.send({
       from: fromEmail,
@@ -22,6 +26,7 @@ export async function POST(req, res) {
     });
     return NextResponse.json(data);
   } catch (error) {
+    console.error("Email send error:", error);
     return NextResponse.json({ error });
   }
 }
